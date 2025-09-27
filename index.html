@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Joyeux Anniversaire Axel 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg,#071227,#0b1221);
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 30px 10px;
+    }
+    h1 {
+      font-size: 32px;
+      margin: 0 0 10px;
+    }
+    p.subtitle {
+      opacity: 0.8;
+      margin: 0;
+    }
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: rgba(255,255,255,0.2); }
+    .poem {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    /* Balloons */
+    .sky { position: fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .balloon {
+      position: absolute;
+      width: 70px; height: 100px;
+      border-radius: 50%;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0.9; }
+    }
+    /* Confetti */
+    .confetti { position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .confetti-piece {
+      position:absolute;
+      width:10px; height:16px;
+      border-radius:2px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎂 Joyeux Anniversaire Axel 🎂</h1>
+    <p class="subtitle">Clique sur les boutons pour la fête 🎉</p>
+  </header>
+
+  <div class="controls">
+    <button id="balloonsBtn">🎈 Ballons</button>
+    <button id="confettiBtn">🎊 Confettis</button>
+    <button id="poemBtn">📜 Poème</button>
+  </div>
+
+  <div id="poemContainer" class="poem" style="display:none">
+    <strong>Joyeux anniversaire Axel !</strong><br>
+    Aujourd’hui est ton jour spécial,<br>
+    Que cette année t’apporte sourires et bonheur,<br>
+    Entouré de tes amis et de ceux qui comptent.<br><br>
+    Profite de chaque instant 🎉
+  </div>
+
+  <div class="sky" id="sky"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const sky = document.getElementById("sky");
+    const confetti = document.getElementById("confetti");
+    const poem = document.getElementById("poemContainer");
+
+    // Ballons
+    function spawnBalloons(count=10){
+      const colors = ["#ff6b6b","#ffb86b","#7afcff","#8bd18f","#c68cff","#ffe66d"];
+      for(let i=0;i<count;i++){
+        const b=document.createElement("div");
+        b.className="balloon";
+        b.style.left=Math.random()*100+"%";
+        const c=colors[Math.floor(Math.random()*colors.length)];
+        b.style.background=c;
+        const dur=8+Math.random()*6;
+        b.style.animation=`floatUp ${dur}s linear forwards`;
+        sky.appendChild(b);
+        setTimeout(()=>b.remove(), dur*1000);
+      }
+    }
+
+    // Confettis
+    function spawnConfetti(pieces=80){
+      const colors=["#ff6b6b","#ffb86b","#7afcff","#8bd18f","#c68cff","#ffe66d","#ffffff"];
+      for(let i=0;i<pieces;i++){
+        const el=document.createElement("div");
+        el.className="confetti-piece";
+        el.style.left=(Math.random()*100)+"%";
+        el.style.top=(Math.random()*-10)+"%";
+        el.style.background=colors[Math.floor(Math.random()*colors.length)];
+        const dur=2+Math.random()*2;
+        el.style.transition=`top ${dur}s linear, transform ${dur}s linear`;
+        confetti.appendChild(el);
+        setTimeout(()=>{
+          el.style.top="110%";
+          el.style.transform=`rotate(${Math.random()*360}deg)`;
+        },10);
+        setTimeout(()=>el.remove(), dur*1000+500);
+      }
+    }
+
+    // Poème
+    document.getElementById("poemBtn").onclick=()=>{
+      poem.style.display = (poem.style.display==="none") ? "block" : "none";
+    };
+
+    document.getElementById("balloonsBtn").onclick=()=>spawnBalloons(12);
+    document.getElementById("confettiBtn").onclick=()=>spawnConfetti(120);
+
+    // petit effet auto au début
+    setTimeout(()=>spawnBalloons(6), 800);
+  </script>
+</body>
+</html>
